@@ -14,6 +14,7 @@ import lombok.Setter;
 @Table(name="tbl_employees")
 public class Employee {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +27,5 @@ public class Employee {
 
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
+
 }
