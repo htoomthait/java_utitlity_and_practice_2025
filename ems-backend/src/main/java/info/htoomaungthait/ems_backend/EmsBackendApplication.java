@@ -7,7 +7,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EmsBackendApplication {
 
 	public static void main(String[] args) {
+//		Dotenv dotenv = Dotenv.load();
+//
+//		String dbHost = dotenv.get("DB_HOST");
+//		String dbPort = dotenv.get("DB_PORT");
+//
+//		System.out.println("Database Host: " + dbHost);
+//		System.out.println("Database Port: " + dbPort);
+
 		SpringApplication.run(EmsBackendApplication.class, args);
+
+
 	}
 
 }
