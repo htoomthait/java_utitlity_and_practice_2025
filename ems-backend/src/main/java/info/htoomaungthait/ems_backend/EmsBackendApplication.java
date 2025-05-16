@@ -9,13 +9,14 @@ public class EmsBackendApplication {
 
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure().load();
-
+		String appName = dotenv.get("APP_NAME", "APP_NAME");
 		String dbHost = dotenv.get("DB_HOST");
 		String dbPort = dotenv.get("DB_PORT");
 		String dbName = dotenv.get("DB_NAME");
 		String dbUsername = dotenv.get("DB_USERNAME");
 		String dbPassword = dotenv.get("DB_PASSWORD");
 
+		System.out.println("App name: " + appName);
 		System.out.println("Database Host: " + dbHost);
 		System.out.println("Database Port: " + dbPort);
 		System.out.println("Database Name: " + dbName);
