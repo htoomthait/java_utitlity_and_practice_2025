@@ -2,7 +2,9 @@ package info.htoomaungthait.ems_backend.util;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ResponseUtil {
 
     public static <T> ResponseEntity<ApiResponse<T>> success(T data) {
