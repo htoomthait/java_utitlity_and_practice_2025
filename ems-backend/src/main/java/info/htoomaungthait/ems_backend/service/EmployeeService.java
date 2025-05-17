@@ -1,8 +1,8 @@
 package info.htoomaungthait.ems_backend.service;
 
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
 
@@ -10,7 +10,7 @@ public interface EmployeeService {
 
     EmployeeDto getEmployeeById(Long employeeId);
 
-    List<EmployeeDto> getAllEmployees();
+    Page<EmployeeDto> getAllEmployees(Pageable pageable);
 
     EmployeeDto updateEmployeeById(Long  employeeId, EmployeeDto updatedEmployee);
 

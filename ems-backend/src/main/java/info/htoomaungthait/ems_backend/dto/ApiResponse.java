@@ -1,16 +1,23 @@
 package info.htoomaungthait.ems_backend.dto;
 
+
+
+
 public class ApiResponse<T> {
     private  int status;
     private String message;
     private T data;
 
 
+
     public  ApiResponse(int status,  String message, T data){
         this.status = status;
         this.message = message;
         this.data = data;
+
     }
+
+
 
     public int getStatus() {
         return status;
@@ -24,6 +31,8 @@ public class ApiResponse<T> {
         return data;
     }
 
+
+
     public void setStatus(int status) {
         this.status = status;
     }
@@ -35,4 +44,6 @@ public class ApiResponse<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+
 }

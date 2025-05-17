@@ -4,12 +4,11 @@ import info.htoomaungthait.ems_backend.dto.ApiResponse;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/employees")
@@ -41,8 +40,8 @@ public class EmployeeController {
 
     // Build get all employees REST API
     @GetMapping
-    public ResponseEntity<ApiResponse<List<EmployeeDto>>> getAllEmployee(){
-        List<EmployeeDto> employees = this.employeeService.getAllEmployees();
+    public ResponseEntity<ApiResponse<Page<EmployeeDto>>> getAllEmployee(Pageable pageable){
+        Page<EmployeeDto> employees = this.employeeService.getAllEmployees(pageable);
 
         return ResponseUtil.success(employees);
     }

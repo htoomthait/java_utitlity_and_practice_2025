@@ -6,15 +6,16 @@ import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.EmployeeMapper;
 import info.htoomaungthait.ems_backend.repository.EmployeeRepository;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository){
         this.employeeRepository = employeeRepository;
@@ -23,9 +24,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+        Employee savedEmployee = null;
+        try{
+            Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
+            savedEmployee = employeeRepository.save(employee);
+        } catch (Exception e) {
+            logger.error("Could not save employee properly! Detail => " + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
-        Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
-        Employee savedEmployee = employeeRepository.save(employee);
 
 
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
@@ -41,11 +48,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDto> getAllEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
+    public Page<EmployeeDto> getAllEmployees(Pageable pageable) {
 
-        return employees.stream().map(EmployeeMapper::mapToEmployeeDto)
-                .collect(Collectors.toList());
+        Page<Employee> employees = employeeRepository.findAll(pageable);
+        //        return employees.stream().map(EmployeeMapper::mapToEmployeeDto)
+//                .collect(Collectors.toList());
+
+
+
+        return employees.map(EmployeeMapper::mapToEmployeeDto);
     }
 
     @Override
