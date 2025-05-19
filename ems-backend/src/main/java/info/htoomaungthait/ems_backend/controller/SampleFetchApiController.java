@@ -8,6 +8,7 @@ import info.htoomaungthait.ems_backend.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -27,5 +28,12 @@ public class SampleFetchApiController {
         RandomJokeDto randomJokeDto =  this.externalApiService.fetchJoke();
 
         return ResponseUtil.success(randomJokeDto);
+    }
+
+    @PostMapping("sample-post-product")
+    public ResponseEntity<ApiResponse<Boolean>> makePostSampleProduct(){
+        Boolean response = this.externalApiService.postAProduct();
+
+        return ResponseUtil.success(response);
     }
 ;}
