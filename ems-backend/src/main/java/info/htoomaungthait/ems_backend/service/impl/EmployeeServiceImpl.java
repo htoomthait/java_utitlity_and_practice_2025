@@ -5,6 +5,7 @@ import info.htoomaungthait.ems_backend.entity.Employee;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.EmployeeMapper;
 import info.htoomaungthait.ems_backend.repository.EmployeeRepository;
+import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +24,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+    public EmployeeDto createEmployee(EmployeeRequest employeeRequest) {
         Employee savedEmployee = null;
         try{
-            Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
+            Employee employee = EmployeeMapper.mapRequestToEmployee(employeeRequest);
+
+            if(employeeRepository.existsByEmail(employee.getEmail())){
+                throw new RuntimeException("Email already exists");
+            }
+
             savedEmployee = employeeRepository.save(employee);
         } catch (Exception e) {
             logger.error("Could not save employee properly! Detail => " + e.getMessage());

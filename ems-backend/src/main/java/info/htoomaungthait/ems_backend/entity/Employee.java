@@ -1,6 +1,8 @@
 package info.htoomaungthait.ems_backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
@@ -12,17 +14,27 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank
+    @Email
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
-    public Employee() {
+    public  Employee(){
 
+    }
+
+    public Employee(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 
     public Employee(Long id, String firstName, String lastName, String email) {

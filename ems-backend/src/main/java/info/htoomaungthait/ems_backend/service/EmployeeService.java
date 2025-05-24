@@ -1,12 +1,13 @@
 package info.htoomaungthait.ems_backend.service;
 
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
+import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
 
-    EmployeeDto createEmployee(EmployeeDto employeeDto);
+    EmployeeDto createEmployee(EmployeeRequest employeeRequest);
 
     EmployeeDto getEmployeeById(Long employeeId);
 
