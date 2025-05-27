@@ -1,7 +1,7 @@
 package info.htoomaungthait.ems_backend.mapper;
 
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
-import info.htoomaungthait.ems_backend.entity.Employee;
+import info.htoomaungthait.ems_backend.model.Employee;
 import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 
 public class EmployeeMapper {

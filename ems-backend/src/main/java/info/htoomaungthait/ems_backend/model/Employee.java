@@ -1,4 +1,4 @@
-package info.htoomaungthait.ems_backend.entity;
+package info.htoomaungthait.ems_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -26,6 +26,10 @@ public class Employee {
     @Email
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
+
+//    @ManyToOne
+//    @JoinColumn(name = "department_id", nullable = true)
+//    private Department department;
 
     public  Employee(){
 

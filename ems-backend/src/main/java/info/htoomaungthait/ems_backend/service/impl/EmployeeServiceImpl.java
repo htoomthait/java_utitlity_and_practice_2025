@@ -1,7 +1,7 @@
 package info.htoomaungthait.ems_backend.service.impl;
 
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
-import info.htoomaungthait.ems_backend.entity.Employee;
+import info.htoomaungthait.ems_backend.model.Employee;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.EmployeeMapper;
 import info.htoomaungthait.ems_backend.repository.EmployeeRepository;
