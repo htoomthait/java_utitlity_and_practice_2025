@@ -2,8 +2,11 @@ package info.htoomaungthait.ems_backend.controller;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
+import info.htoomaungthait.ems_backend.entity.Employee;
+import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +26,9 @@ public class EmployeeController {
     // Build add employee REST API
 
     @PostMapping
-    public ResponseEntity<ApiResponse<EmployeeDto>> createEmployee(@RequestBody EmployeeDto employeeDto){
-        EmployeeDto savedEmployee =  this.employeeService.createEmployee(employeeDto);
+    public ResponseEntity<ApiResponse<EmployeeDto>> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest){
+
+        EmployeeDto savedEmployee =  this.employeeService.createEmployee(employeeRequest);
 
         return ResponseUtil.success(savedEmployee);
     }
