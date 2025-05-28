@@ -31,6 +31,13 @@ public class Department {
         this.status = status;
     }
 
+    public Department(Long id, String name, String description, DepartmentStatus status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
