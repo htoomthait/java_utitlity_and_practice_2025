@@ -25,6 +25,10 @@ public class Department {
     @Enumerated(EnumType.STRING)
     private DepartmentStatus status = DepartmentStatus.ACTIVE;
 
+    public Department() {
+
+    }
+
     public Department(String name, String description, DepartmentStatus status) {
         this.name = name;
         this.description = description;

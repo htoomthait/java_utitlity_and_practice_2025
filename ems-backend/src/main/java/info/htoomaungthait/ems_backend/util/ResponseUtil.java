@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResponseUtil {
+public class ResponseUtil<A> {
 
     public static <T> ResponseEntity<ApiResponse<T>> success(T data) {
         return ResponseEntity.ok(new ApiResponse<>(200, "success", data));
