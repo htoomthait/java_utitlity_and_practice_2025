@@ -1,29 +1,30 @@
 package info.htoomaungthait.ems_backend.dto;
 
+public class ApiResponseV2<T> {
 
-
-
-public class ApiResponse<T> {
-    private  int status;
+    private int statusCode;
+    private  String status;
     private String message;
     private T data;
 
 
 
-    public  ApiResponse(int status,  String message, T data){
+    public  ApiResponseV2(String status,  String message, T data){
         this.status = status;
         this.message = message;
         this.data = data;
 
     }
 
-    public  ApiResponse(){
+    public  ApiResponseV2(){
 
     }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
 
-
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -36,9 +37,11 @@ public class ApiResponse<T> {
     }
 
 
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
 
-
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -49,6 +52,4 @@ public class ApiResponse<T> {
     public void setData(T data) {
         this.data = data;
     }
-
-
 }

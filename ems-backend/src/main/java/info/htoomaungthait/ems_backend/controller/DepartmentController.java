@@ -1,6 +1,7 @@
 package info.htoomaungthait.ems_backend.controller;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
+import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import info.htoomaungthait.ems_backend.service.DepartmentService;
@@ -30,10 +31,16 @@ public class DepartmentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ApiResponse<DepartmentDto>> getDepartmentById(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> getDepartmentById(@PathVariable("id") Long id){
         DepartmentDto departmentDto = this.departmentService.getDepartmentById(id);
 
-        return ResponseUtil.success(departmentDto);
+        return ResponseUtil.<DepartmentDto>getInstance()
+                .httpStatus(200)
+                .statusCode(200)
+                .status("success")
+                .message("Department has been queried successfully")
+                .data(departmentDto)
+                .build();
     }
 
     @GetMapping()
