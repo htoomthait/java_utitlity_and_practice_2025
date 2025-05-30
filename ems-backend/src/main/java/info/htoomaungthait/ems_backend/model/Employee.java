@@ -27,9 +27,9 @@ public class Employee {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
-//    @ManyToOne
-//    @JoinColumn(name = "department_id", nullable = true)
-//    private Department department;
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = true)
+    private Department department;
 
     public  Employee(){
 
@@ -78,5 +78,24 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", department=" + (department != null ? department.getId() : "null") +
+                '}';
     }
 }

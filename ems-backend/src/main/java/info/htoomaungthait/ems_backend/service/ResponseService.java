@@ -22,6 +22,8 @@ public interface ResponseService<T> {
 
     ResponseEntity<ApiResponseV2<T>> resourceNotFound(String message);
 
+    ResponseEntity<ApiResponseV2<T>> resourceConflict(String message);
+
     ResponseEntity<ApiResponseV2<T>> requestInvalid(String message);
 
     ResponseEntity<ApiResponseV2<T>> promptError(String message);

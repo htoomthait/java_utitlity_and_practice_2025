@@ -1,6 +1,7 @@
 package info.htoomaungthait.ems_backend.controller;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
+import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
 import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
@@ -25,49 +26,50 @@ public class EmployeeController {
     // Build add employee REST API
 
     @PostMapping
-    public ResponseEntity<ApiResponse<EmployeeDto>> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest){
+    public ResponseEntity<ApiResponseV2<EmployeeDto>> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest){
 
-        EmployeeDto savedEmployee =  this.employeeService.createEmployee(employeeRequest);
+        return this.employeeService.createEmployee(employeeRequest);
 
-        return ResponseUtil.success(savedEmployee);
+
     }
 
     // Build get employee REST API
     @GetMapping("{id}")
-    public ResponseEntity<ApiResponse<EmployeeDto>> getEmployeeById(@PathVariable("id") Long employeeId){
-        EmployeeDto employeeDtoById = this.employeeService.getEmployeeById(employeeId);
+    public ResponseEntity<ApiResponseV2<EmployeeDto>> getEmployeeById(@PathVariable("id") Long employeeId){
 
-        return ResponseUtil.success(employeeDtoById);
+        return this.employeeService.getEmployeeById(employeeId);
+
+
     }
 
 
     // Build get all employees REST API
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<EmployeeDto>>> getAllEmployee(Pageable pageable){
-        Page<EmployeeDto> employees = this.employeeService.getAllEmployees(pageable);
-
-        return ResponseUtil.success(employees);
+    public ResponseEntity<ApiResponseV2<Page<EmployeeDto>>> getAllEmployee(Pageable pageable){
+        return this.employeeService.getAllEmployees(pageable);
     }
 
     // Build update employee REST API
     @PutMapping("{id}")
-    public  ResponseEntity<ApiResponse<EmployeeDto>> updateEmployeeById(
+    public  ResponseEntity<ApiResponseV2<EmployeeDto>> updateEmployeeById(
             @PathVariable("id") Long employeeId,
             @RequestBody EmployeeDto updatedEmployee){
 
-        EmployeeDto dbUpdatedEmployee = employeeService.updateEmployeeById(employeeId, updatedEmployee);
+        return employeeService.updateEmployeeById(employeeId, updatedEmployee);
 
-        return ResponseUtil.success(dbUpdatedEmployee);
+
     }
 
 
     // Build delete employee REST API
     @DeleteMapping("{id}")
-    public ResponseEntity<ApiResponse<String>> deleteEmployeeById(@PathVariable("id") Long employeeId){
-        employeeService.deleteEmployeeById(employeeId);
+    public ResponseEntity<ApiResponseV2<EmployeeDto>> deleteEmployeeById(@PathVariable("id") Long employeeId){
 
 
-        return ResponseUtil.success("Employee with Id " + employeeId + " has been deleted successfully!");
+        return employeeService.deleteEmployeeById(employeeId);
+
+
+
     }
 
 
