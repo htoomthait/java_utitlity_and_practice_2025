@@ -19,53 +19,47 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    public DepartmentController(DepartmentService departmentService){
+    public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<DepartmentDto>> createDepartment(@Valid @RequestBody DepartmentRequest departmentRequest){
-        DepartmentDto departmentDto = this.departmentService.createDepartment(departmentRequest);
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> createDepartment(@Valid @RequestBody DepartmentRequest departmentRequest) {
 
-        return ResponseUtil.success(departmentDto);
+        return this.departmentService.createDepartment(departmentRequest);
+
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ApiResponseV2<DepartmentDto>> getDepartmentById(@PathVariable("id") Long id){
-        DepartmentDto departmentDto = this.departmentService.getDepartmentById(id);
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> getDepartmentById(@PathVariable("id") Long id) {
 
-        return ResponseUtil.<DepartmentDto>getInstance()
-                .httpStatus(200)
-                .statusCode(200)
-                .status("success")
-                .message("Department has been queried successfully")
-                .data(departmentDto)
-                .build();
+        return this.departmentService.getDepartmentById(id);
+
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<DepartmentDto>>> getAllDepartment(Pageable pageable){
-        Page<DepartmentDto> departments = this.departmentService.getAllDepartment(pageable);
+    public ResponseEntity<ApiResponseV2<Page<DepartmentDto>>> getAllDepartment(Pageable pageable) {
 
-        return ResponseUtil.success(departments);
+        return this.departmentService.getAllDepartment(pageable);
+
+
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ApiResponse<DepartmentDto>> updateDepartmentById(
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> updateDepartmentById(
             @PathVariable("id") Long id,
             @RequestBody DepartmentRequest departmentDataToUpdate
-    ){
-        DepartmentDto dbUpdatedEmployeeDto = this.departmentService.updateDepartmentById(id, departmentDataToUpdate);
+    ) {
+        return this.departmentService.updateDepartmentById(id, departmentDataToUpdate);
 
-        return ResponseUtil.success(dbUpdatedEmployeeDto);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<ApiResponse<String>> deleteDepartmentById(@PathVariable Long id){
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> deleteDepartmentById(@PathVariable Long id) {
 
-        Boolean status = this.departmentService.deleteDepartmentById(id);
+        return this.departmentService.deleteDepartmentById(id);
 
-        return ResponseUtil.success("Department with Id " + id + " has been deleted successfully");
+
     }
 
 

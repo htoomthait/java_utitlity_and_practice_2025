@@ -1,17 +1,19 @@
 package info.htoomaungthait.ems_backend.service.impl;
 
+import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.DepartmentMapper;
-import info.htoomaungthait.ems_backend.mapper.EmployeeMapper;
 import info.htoomaungthait.ems_backend.model.Department;
 import info.htoomaungthait.ems_backend.repository.DepartmentRepository;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import info.htoomaungthait.ems_backend.service.DepartmentService;
+import info.htoomaungthait.ems_backend.service.ResponseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,63 +22,81 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final ResponseService<DepartmentDto> responseService;
     private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository){
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, ResponseService<DepartmentDto> responseService) {
         this.departmentRepository = departmentRepository;
+        this.responseService = responseService;
     }
 
     @Override
-    public DepartmentDto createDepartment(DepartmentRequest departmentRequest) {
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> createDepartment(DepartmentRequest departmentRequest) {
         Department departmentToCreate = DepartmentMapper.mapRequestToDepartment(departmentRequest);
-        Department createdDepartment = null;
+        Department createdDepartment = new Department();
 
-        try{
+        try {
             createdDepartment = this.departmentRepository.save(departmentToCreate);
         } catch (Exception e) {
-            logger.error("Could not create department properly! Check detail => {}", e.getMessage());
-            throw new RuntimeException(e);
+            String errorMessage = "Could not create department properly! ";
+            logger.error(errorMessage + "Check detail => {}", e.getMessage());
+
+            return this.responseService.promptError(errorMessage);
         }
-        return DepartmentMapper.mapToDepartmentDto(createdDepartment);
+
+        return this.responseService.createdSuccess(
+                "Your department has been created successfully!",
+                DepartmentMapper.mapToDepartmentDto(createdDepartment)
+        );
     }
 
     @Override
-    public DepartmentDto getDepartmentById(Long id) {
-        Department department = null;
-        try{
-            department = this.departmentRepository.findById(id)
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> getDepartmentById(Long id) {
+        try {
+            Department department = this.departmentRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Department does not exist with given id " + id));
+
+            return this.responseService.queriedSuccess(
+                    "Department with ID: " + id + " has been queried successfully!",
+                    DepartmentMapper.mapToDepartmentDto(department)
+            );
+
+        } catch (ResourceNotFoundException ex) {
+            logger.warn(ex.getMessage());
+            return this.responseService.resourceNotFound(ex.getMessage());
+
         } catch (Exception e) {
-            logger.error("Could find department by Id! Check detail => {}",e.getMessage());
-            throw new RuntimeException(e);
+            String errorMessage = "Could not fetch department by ID: " + id;
+            logger.error("{}! Check detail => {}", errorMessage, e.getMessage());
+            return this.responseService.promptError(errorMessage);
         }
-        return DepartmentMapper.mapToDepartmentDto(department);
     }
 
     @Override
-    public Page<DepartmentDto> getAllDepartment(Pageable pageable) {
+    public ResponseEntity<ApiResponseV2<Page<DepartmentDto>>> getAllDepartment(Pageable pageable) {
         Page<Department> departments = null;
 
-        try{
+        try {
             departments = this.departmentRepository.findAll(pageable);
 
-        }catch(Exception e){
-            logger.error("Department list could not be queried! Check detail => {}", e.getMessage());
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            String errorMessage = "Could not query department pagination list";
+            logger.error("{}! Check detail => {}", errorMessage, e.getMessage());
+            return this.responseService.promptErrorPage(errorMessage);
         }
 
-        if (departments == null) {
-            throw new AssertionError("Department list is empty");
-        }
-        return departments.map(DepartmentMapper::mapToDepartmentDto);
+
+        return this.responseService.queriedPageSuccess("",
+                departments.map(DepartmentMapper::mapToDepartmentDto)
+        );
     }
 
     @Override
-    public DepartmentDto updateDepartmentById(Long id, DepartmentRequest updatedDepartment) {
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> updateDepartmentById(Long id, DepartmentRequest updatedDepartment) {
         Department department;
         Department updatedDataToReturn;
 
-        try{
+        try {
             department = this.departmentRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Department not found for given department id: " + id));
 
@@ -85,26 +105,46 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setStatus((updatedDepartment.getStatus()));
 
             updatedDataToReturn = this.departmentRepository.save(department);
+
+            return this.responseService.queriedSuccess(
+                    "Department with ID: " + id + " has been updated successfully!",
+                    DepartmentMapper.mapToDepartmentDto(updatedDataToReturn)
+            );
+        } catch (ResourceNotFoundException ex) {
+            logger.warn(ex.getMessage());
+            return this.responseService.resourceNotFound(ex.getMessage());
+
         } catch (Exception e) {
-            logger.error("Could not update for given department with Id: " + id);
-            throw new RuntimeException(e);
+            String errorMessage = "Could not fetch department by ID: " + id;
+            logger.error("{}! Check detail => {}", errorMessage, e.getMessage());
+            return this.responseService.promptError(errorMessage);
         }
 
 
-        return DepartmentMapper.mapToDepartmentDto(updatedDataToReturn);
     }
 
     @Override
-    public boolean deleteDepartmentById(Long id) {
-        try{
-            this.departmentRepository.findById(id)
+    public ResponseEntity<ApiResponseV2<DepartmentDto>> deleteDepartmentById(Long id) {
+        try {
+            Department department = this.departmentRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Department not found for given department id: " + id));
             this.departmentRepository.deleteById(id);
-        }catch (Exception e){
-            logger.error("Could not delete the department with Id : " + id + "!");
-            throw new RuntimeException(e);
+
+            return this.responseService.deletedSuccess("Department with ID: " + id + " has been deleted successfully!",
+                    DepartmentMapper.mapToDepartmentDto(department)
+            );
+        } catch (ResourceNotFoundException ex) {
+            logger.warn(ex.getMessage());
+            return this.responseService.resourceNotFound(ex.getMessage());
+
+        } catch (Exception e) {
+            String errorMessage = "Department with ID: " + id + "cannot be deleted";
+            logger.error("{}! Check detail => {}", errorMessage, e.getMessage());
+            return this.responseService.promptError(errorMessage);
         }
 
-        return true;
+
     }
+
+
 }
