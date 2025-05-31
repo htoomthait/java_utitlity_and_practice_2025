@@ -2,6 +2,7 @@ package info.htoomaungthait.ems_backend.service.impl;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
+import info.htoomaungthait.ems_backend.dto.EmployeeWithNetSalaryDto;
 import info.htoomaungthait.ems_backend.model.Department;
 import info.htoomaungthait.ems_backend.model.Employee;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import info.htoomaungthait.ems_backend.repository.EmployeeRepository;
 import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import info.htoomaungthait.ems_backend.service.ResponseService;
+import info.htoomaungthait.ems_backend.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -179,5 +183,89 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 
+    }
+
+    @Override
+    public ResponseEntity<ApiResponseV2<EmployeeWithNetSalaryDto>> getEmployeeByIdWithNetSalary(Long employeeId){
+        Employee employee;
+        try{
+            employee = this.employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee with given ID: "+ employeeId+" could not be found"));
+
+            EmployeeWithNetSalaryDto returnData = getEmployeeWithNetSalaryDto(employee);
+
+
+            return ResponseUtil.<EmployeeWithNetSalaryDto>getInstance()
+                    .httpStatus(200).statusCode(200).status("success").message("your employee with net salary has been queried successfully!")
+                    .data(returnData)
+                    .build();
+
+        }catch (ResourceNotFoundException e){
+            logger.warn(e.getMessage());
+            return ResponseUtil.<EmployeeWithNetSalaryDto>getInstance()
+                    .httpStatus(404).statusCode(404).status("warning").message("your employee with net salary could not be found!")
+                    .data(null)
+                    .build();
+
+        } catch (Exception e) {
+            String errorMessage = "Could not query employee properly for given ID: " + employeeId + "!";
+            logger.error("{} Detail => {}", errorMessage, e.getMessage());
+            return ResponseUtil.<EmployeeWithNetSalaryDto>getInstance()
+                    .httpStatus(500).statusCode(500).status("error").message("your employee with net salary could not be queried!")
+                    .data(null)
+                    .build();
+        }
+
+
+    }
+    @Override
+    public ResponseEntity<ApiResponseV2<List<EmployeeWithNetSalaryDto>>> getEmployeesWithNetSalary() {
+
+        try{
+            // Get data from database
+            List<Employee> employees = this.employeeRepository.findAll();
+
+            // Make random value deduction
+            List<EmployeeWithNetSalaryDto> returnData = employees
+                    .stream()
+                    .map(EmployeeServiceImpl::getEmployeeWithNetSalaryDto)
+                    .toList();
+
+            // Return statement
+            return ResponseUtil.<List<EmployeeWithNetSalaryDto>>getInstance()
+                    .httpStatus(200).statusCode(200).status("success").message("Your employees with net salaries have been queried successfully")
+                    .data(returnData)
+                    .build();
+
+        } catch (Exception e) {
+            // Error block
+            String errorMessage = "Could not update employees with net salaries properly !";
+            logger.error("{} Detail => {}", errorMessage, e.getMessage());
+            return ResponseUtil.<List<EmployeeWithNetSalaryDto>>getInstance()
+                    .httpStatus(500).statusCode(500).status("error").message("your employee with net salary could not be queried!")
+                    .data(null)
+                    .build();
+        }
+    }
+
+
+    private static EmployeeWithNetSalaryDto getEmployeeWithNetSalaryDto(Employee employee) {
+        int[] numbers = {5, 10, 15, 20, 25, 50, 100, 200, 300, 500};
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(numbers.length); // 0 to numbers.length - 1
+
+        int randomValueOfDeduction = numbers[randomIndex];
+
+        return new EmployeeWithNetSalaryDto(
+                employee.getId(),
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getEmail(),
+                employee.getSalary(),
+                employee.getDepartment().getId(),
+                randomValueOfDeduction,
+                employee.getSalary() - randomValueOfDeduction
+        );
     }
 }

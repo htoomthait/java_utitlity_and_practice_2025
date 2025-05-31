@@ -3,6 +3,7 @@ package info.htoomaungthait.ems_backend.controller;
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
+import info.htoomaungthait.ems_backend.dto.EmployeeWithNetSalaryDto;
 import info.htoomaungthait.ems_backend.request.EmployeeRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/employees")
@@ -70,6 +73,16 @@ public class EmployeeController {
 
 
 
+    }
+
+    @GetMapping("/net-salary/{id}")
+    public ResponseEntity<ApiResponseV2<EmployeeWithNetSalaryDto>> getEmployeeWithNetSalaryById(@PathVariable("id") Long id){
+        return employeeService.getEmployeeByIdWithNetSalary(id);
+    }
+
+    @GetMapping("/net-salaries")
+    public ResponseEntity<ApiResponseV2<List<EmployeeWithNetSalaryDto>>> getEmployeesWithSalaries(){
+        return employeeService.getEmployeesWithNetSalary();
     }
 
 

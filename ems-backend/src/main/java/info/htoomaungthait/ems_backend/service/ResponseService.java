@@ -29,4 +29,6 @@ public interface ResponseService<T> {
     ResponseEntity<ApiResponseV2<T>> promptError(String message);
 
     ResponseEntity<ApiResponseV2<Page<T>>> promptErrorPage(String message);
+
+
 }
