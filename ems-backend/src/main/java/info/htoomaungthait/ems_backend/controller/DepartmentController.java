@@ -3,6 +3,7 @@ package info.htoomaungthait.ems_backend.controller;
 import info.htoomaungthait.ems_backend.dto.ApiResponse;
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
+import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import info.htoomaungthait.ems_backend.service.DepartmentService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/departments")
@@ -60,6 +63,11 @@ public class DepartmentController {
         return this.departmentService.deleteDepartmentById(id);
 
 
+    }
+
+    @GetMapping("get-with-employee-count")
+    public ResponseEntity<ApiResponseV2<List<DepartmentEmployeeCountDto>>> getDepartmentWithEmployeeCount(){
+        return this.departmentService.getDepartmentEmployeeCountDto();
     }
 
 

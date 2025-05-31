@@ -2,11 +2,14 @@ package info.htoomaungthait.ems_backend.service.impl;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
+import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
 import info.htoomaungthait.ems_backend.service.ResponseService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DepartmentResponseServiceImpl implements ResponseService<DepartmentDto> {
@@ -117,6 +120,16 @@ public class DepartmentResponseServiceImpl implements ResponseService<Department
                 .status("error")
                 .message(message)
                 .data(null)
+                .build();
+    }
+
+    public ResponseEntity<ApiResponseV2<List<DepartmentEmployeeCountDto>>>  successQueryWithEmpCount(String message, List<DepartmentEmployeeCountDto> data){
+        return ResponseUtil.<List<DepartmentEmployeeCountDto>>getInstance()
+                .httpStatus(200)
+                .statusCode(200)
+                .status("success")
+                .message(message)
+                .data(data)
                 .build();
     }
 }

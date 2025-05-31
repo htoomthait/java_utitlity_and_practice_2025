@@ -20,6 +20,7 @@ public class EmployeeMapper {
                 employee.getFirstName(),
                 employee.getLastName(),
                 employee.getEmail(),
+                employee.getSalary(),
                 departmentId
         );
     }
@@ -28,7 +29,8 @@ public class EmployeeMapper {
         Employee employee = new Employee(
                 employeeDto.getFirstName(),
                 employeeDto.getLastName(),
-                employeeDto.getEmail()
+                employeeDto.getEmail(),
+                employeeDto.getSalary()
         );
         employee.setDepartment(department); // associate department
         return employee;
@@ -38,7 +40,8 @@ public class EmployeeMapper {
         Employee employee = new Employee(
                 employeeRequest.getFirstName(),
                 employeeRequest.getLastName(),
-                employeeRequest.getEmail()
+                employeeRequest.getEmail(),
+                employeeRequest.getSalary()
         );
         employee.setDepartment(department); // associate department
         return employee;

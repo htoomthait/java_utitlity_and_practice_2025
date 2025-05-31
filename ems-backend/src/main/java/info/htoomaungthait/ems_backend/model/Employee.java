@@ -27,6 +27,9 @@ public class Employee {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
+
+    private double salary = 1000.0;
+
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = true)
     private Department department;
@@ -35,17 +38,19 @@ public class Employee {
 
     }
 
-    public Employee(String firstName, String lastName, String email) {
+    public Employee(String firstName, String lastName, String email, double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.salary = salary;
     }
 
-    public Employee(Long id, String firstName, String lastName, String email) {
+    public Employee(Long id, String firstName, String lastName, String email, double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.salary = salary;
     }
 
     public Long getId() {
@@ -80,8 +85,16 @@ public class Employee {
         this.email = email;
     }
 
+    public double getSalary() {
+        return salary;
+    }
+
     public Department getDepartment() {
         return department;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public void setDepartment(Department department) {

@@ -2,13 +2,16 @@ package info.htoomaungthait.ems_backend.service.impl;
 
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
+import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.DepartmentMapper;
 import info.htoomaungthait.ems_backend.model.Department;
 import info.htoomaungthait.ems_backend.repository.DepartmentRepository;
+import info.htoomaungthait.ems_backend.repository.DepartmentRepositoryCustomImpl;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import info.htoomaungthait.ems_backend.service.DepartmentService;
 import info.htoomaungthait.ems_backend.service.ResponseService;
+import info.htoomaungthait.ems_backend.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,18 +19,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
-    private final ResponseService<DepartmentDto> responseService;
+    private final DepartmentRepositoryCustomImpl departmentRepositoryCustom;
+    private final DepartmentResponseServiceImpl responseService;
     private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository, ResponseService<DepartmentDto> responseService) {
+    public DepartmentServiceImpl(
+            DepartmentRepository departmentRepository,
+            DepartmentResponseServiceImpl responseService,
+            DepartmentRepositoryCustomImpl departmentRepositoryCustom) {
         this.departmentRepository = departmentRepository;
         this.responseService = responseService;
+        this.departmentRepositoryCustom = departmentRepositoryCustom;
     }
 
     @Override
@@ -145,6 +154,30 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 
     }
+
+    @Override
+    public ResponseEntity<ApiResponseV2<List<DepartmentEmployeeCountDto>>> getDepartmentEmployeeCountDto() {
+        try{
+//            List<DepartmentEmployeeCountDto> departmentData = this.departmentRepositoryCustom.getDepartmentWithCounts(); // this is working version too
+            List<DepartmentEmployeeCountDto> departmentData =  this.departmentRepository.getDepartmentsWithEmployeeCount();
+
+            return this.responseService
+                    .successQueryWithEmpCount("Your departments with employee count list has been queried successfully",
+                            departmentData
+                    );
+        } catch (Exception e) {
+            String errorMessage = "Could not query the department list with employee count!";
+            logger.error("{} Check detail => {}", errorMessage, e.getMessage());
+
+            return ResponseUtil.<List<DepartmentEmployeeCountDto>>getInstance()
+                    .httpStatus(503).statusCode(503).status("success").message(errorMessage).data(null)
+                    .build();
+        }
+
+
+    }
+
+
 
 
 }

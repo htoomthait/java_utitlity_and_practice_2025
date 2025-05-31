@@ -1,6 +1,7 @@
 package info.htoomaungthait.ems_backend.request;
 
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,6 +16,9 @@ public class EmployeeRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be greater than 0")
+    private double salary;
 
 
     private Long department;
@@ -46,6 +50,14 @@ public class EmployeeRequest {
 
     public @NotBlank(message = "Email is required") @Email(message = "Invalid email format") String getEmail() {
         return email;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public Long getDepartment() {

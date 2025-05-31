@@ -6,13 +6,16 @@ package info.htoomaungthait.ems_backend.dto;
  */
 public class EmployeeDto {
 
-    public EmployeeDto(Long id, String firstName, String lastName, String email, Long department) {
+    public EmployeeDto(Long id, String firstName, String lastName, String email, double salary, Long department) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.salary = salary;
         this.department = department;
     }
+
+
 
 
 
@@ -20,6 +23,7 @@ public class EmployeeDto {
     private String firstName;
     private String lastName;
     private String email;
+    private double salary;
     private Long department;
 
     public Long getId() {
@@ -52,6 +56,14 @@ public class EmployeeDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public Long getDepartment() {
