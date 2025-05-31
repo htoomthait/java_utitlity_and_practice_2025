@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
+
+
     public String generateToken(String username){
         return Jwts.builder()
                 .setSubject(username)

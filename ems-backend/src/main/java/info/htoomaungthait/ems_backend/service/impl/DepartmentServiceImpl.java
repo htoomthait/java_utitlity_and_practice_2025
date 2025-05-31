@@ -3,6 +3,7 @@ package info.htoomaungthait.ems_backend.service.impl;
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
 import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
+import info.htoomaungthait.ems_backend.dto.DepartmentWithEmployeeTaxedSalaryDto;
 import info.htoomaungthait.ems_backend.exception.ResourceNotFoundException;
 import info.htoomaungthait.ems_backend.mapper.DepartmentMapper;
 import info.htoomaungthait.ems_backend.model.Department;
@@ -177,7 +178,49 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     }
 
+    @Override
+    public ResponseEntity<ApiResponseV2<List<DepartmentWithEmployeeTaxedSalaryDto>>> getDepartmentWithTaxedEmployeeSalaries() {
+        try{
 
+            List<DepartmentWithEmployeeTaxedSalaryDto> rawData = this.departmentRepositoryCustom.getDepartmentWithEmployeeCountAndSalariesTotal();
+
+
+
+            List<DepartmentWithEmployeeTaxedSalaryDto> taxedData = rawData.stream().map(DepartmentServiceImpl::calculateTaxedAmountOfGivenSalary)
+                    .toList();
+
+            return ResponseUtil.<List<DepartmentWithEmployeeTaxedSalaryDto>>getInstance()
+                    .httpStatus(200).statusCode(200).status("success").message("")
+                    .data(taxedData)
+                    .build();
+
+        } catch (Exception e) {
+            String errorMessage = "Could not query the department list with employee tax salaries!";
+            logger.error("{} Check detail => {}", errorMessage, e.getMessage());
+
+            return ResponseUtil.<List<DepartmentWithEmployeeTaxedSalaryDto>>getInstance()
+                    .httpStatus(503).statusCode(503).status("success").message(errorMessage).data(null)
+                    .build();
+        }
+    }
+
+    private static DepartmentWithEmployeeTaxedSalaryDto calculateTaxedAmountOfGivenSalary(DepartmentWithEmployeeTaxedSalaryDto department){
+        double taxPercentage = 5.0; // 5% taxed
+        double taxPercentageToCal = taxPercentage / 100;
+        double totalSalary = department.getSalaryTotal();
+        double taxedAmount = totalSalary * taxPercentageToCal;
+        double totalTaxedSalary = totalSalary - taxedAmount;
+
+        return new DepartmentWithEmployeeTaxedSalaryDto(
+                department.getId(),
+                department.getName(),
+                department.getEmployeeCount(),
+                totalSalary,
+                taxPercentage,
+                totalTaxedSalary
+        );
+
+    }
 
 
 }

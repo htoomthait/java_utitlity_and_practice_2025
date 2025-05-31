@@ -3,6 +3,7 @@ package info.htoomaungthait.ems_backend.service;
 import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.DepartmentDto;
 import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
+import info.htoomaungthait.ems_backend.dto.DepartmentWithEmployeeTaxedSalaryDto;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,6 @@ public interface DepartmentService {
     ResponseEntity<ApiResponseV2<DepartmentDto>> deleteDepartmentById(Long id);
 
     ResponseEntity<ApiResponseV2<List<DepartmentEmployeeCountDto>>> getDepartmentEmployeeCountDto();
+
+    ResponseEntity<ApiResponseV2<List<DepartmentWithEmployeeTaxedSalaryDto>>> getDepartmentWithTaxedEmployeeSalaries();
 }

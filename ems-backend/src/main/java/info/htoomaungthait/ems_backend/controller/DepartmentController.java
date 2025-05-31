@@ -1,9 +1,6 @@
 package info.htoomaungthait.ems_backend.controller;
 
-import info.htoomaungthait.ems_backend.dto.ApiResponse;
-import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
-import info.htoomaungthait.ems_backend.dto.DepartmentDto;
-import info.htoomaungthait.ems_backend.dto.DepartmentEmployeeCountDto;
+import info.htoomaungthait.ems_backend.dto.*;
 import info.htoomaungthait.ems_backend.request.DepartmentRequest;
 import info.htoomaungthait.ems_backend.service.DepartmentService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
@@ -68,6 +65,11 @@ public class DepartmentController {
     @GetMapping("get-with-employee-count")
     public ResponseEntity<ApiResponseV2<List<DepartmentEmployeeCountDto>>> getDepartmentWithEmployeeCount(){
         return this.departmentService.getDepartmentEmployeeCountDto();
+    }
+
+    @GetMapping("get-with-employee-taxed-salaries")
+    public ResponseEntity<ApiResponseV2<List<DepartmentWithEmployeeTaxedSalaryDto>>> getDepartmentWithTaxedEmployeeSalaries(){
+        return this.departmentService.getDepartmentWithTaxedEmployeeSalaries();
     }
 
 
