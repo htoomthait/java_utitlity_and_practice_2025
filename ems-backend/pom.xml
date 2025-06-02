@@ -74,6 +74,13 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<!--Web Client for Http Client -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+
 		<!-- JAXB -->
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
@@ -99,11 +106,29 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- shell method-->
+		<dependency>
+			<groupId>org.springframework.shell</groupId>
+			<artifactId>spring-shell-starter</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<!-- Java Faker -->
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 
 		<!-- Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>3.4.3</version>
 		</dependency>
 	</dependencies>
 
@@ -123,6 +148,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
