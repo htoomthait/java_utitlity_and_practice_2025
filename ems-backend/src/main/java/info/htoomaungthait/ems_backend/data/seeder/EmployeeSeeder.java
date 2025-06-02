@@ -1,7 +1,7 @@
 package info.htoomaungthait.ems_backend.data.seeder;
 
 import com.github.javafaker.Faker;
-import info.htoomaungthait.ems_backend.entity.Employee;
+import info.htoomaungthait.ems_backend.model.Employee;
 import info.htoomaungthait.ems_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Component;
 
