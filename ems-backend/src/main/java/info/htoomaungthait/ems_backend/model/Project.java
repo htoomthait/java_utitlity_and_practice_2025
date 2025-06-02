@@ -49,7 +49,7 @@ public class Project {
 
    @ManyToOne
    @JoinColumn(name = "project_manager", nullable = true)
-   private Long projectManager;
+   private Employee projectManager;
 
    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
    private Set<ProjectAssignment> assignments = new HashSet<>();
@@ -61,7 +61,7 @@ public class Project {
    @UpdateTimestamp
    private LocalDateTime updatedAt;
 
-   public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status, Long projectManager) {
+   public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status, Employee projectManager) {
       this.id = id;
       this.name = name;
       this.description = description;
@@ -73,7 +73,7 @@ public class Project {
       this.projectManager = projectManager;
    }
 
-   public Project(String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status, Long projectManager) {
+   public Project(String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status, Employee projectManager) {
       this.name = name;
       this.description = description;
       this.startDate = startDate;
@@ -116,7 +116,7 @@ public class Project {
       return status;
    }
 
-   public Long getProjectManager() {
+   public Employee getProjectManager() {
       return projectManager;
    }
 
@@ -164,7 +164,7 @@ public class Project {
       this.status = status;
    }
 
-   public void setProjectManager(Long projectManager) {
+   public void setProjectManager(Employee projectManager) {
       this.projectManager = projectManager;
    }
 
