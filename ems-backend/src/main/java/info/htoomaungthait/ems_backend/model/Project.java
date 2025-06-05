@@ -73,6 +73,17 @@ public class Project {
       this.projectManager = projectManager;
    }
 
+   public Project(String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status) {
+      this.name = name;
+      this.description = description;
+      this.startDate = startDate;
+      this.endDate = endDate;
+      this.duration = duration;
+      this.category = category;
+      this.status = status;
+
+   }
+
    public Project(String name, String description, LocalDate startDate, LocalDate endDate, double duration, ProjectCategory category, ProjectStatus status, Employee projectManager) {
       this.name = name;
       this.description = description;

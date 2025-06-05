@@ -1,5 +1,7 @@
 package info.htoomaungthait.ems_backend.request;
 
+import info.htoomaungthait.ems_backend.model.ProjectCategory;
+import info.htoomaungthait.ems_backend.model.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -20,10 +22,12 @@ public class ProjectRequest {
 
     private double duration;
 
-    private String category;
+    private ProjectCategory category;
 
     @NotBlank(message = "Project category cannot be blank!")
-    private String status;
+    private ProjectStatus status;
+
+    private Long projectManager;
 
 
     public @NotBlank(message = "Project name is required") String getName() {
@@ -46,12 +50,16 @@ public class ProjectRequest {
         return duration;
     }
 
-    public String getCategory() {
+    public ProjectCategory getCategory() {
         return category;
     }
 
-    public @NotBlank(message = "Project category cannot be blank!") String getStatus() {
+    public @NotBlank(message = "Project category cannot be blank!") ProjectStatus getStatus() {
         return status;
+    }
+
+    public Long getProjectManager() {
+        return projectManager;
     }
 
     public void setName(@NotBlank(message = "Project name is required") String name) {
@@ -74,11 +82,15 @@ public class ProjectRequest {
         this.duration = duration;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProjectCategory category) {
         this.category = category;
     }
 
-    public void setStatus(@NotBlank(message = "Project category cannot be blank!") String status) {
+    public void setStatus(@NotBlank(message = "Project category cannot be blank!") ProjectStatus status) {
         this.status = status;
+    }
+
+    public void setProjectManager(Long projectManager) {
+        this.projectManager = projectManager;
     }
 }
