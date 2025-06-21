@@ -5,6 +5,7 @@ import info.htoomaungthait.ems_backend.dto.ApiResponseV2;
 import info.htoomaungthait.ems_backend.dto.EmployeeDto;
 import info.htoomaungthait.ems_backend.dto.EmployeeWithNetSalaryDto;
 import info.htoomaungthait.ems_backend.request.EmployeeRequest;
+import info.htoomaungthait.ems_backend.request.PaginationRequest;
 import info.htoomaungthait.ems_backend.service.EmployeeService;
 import info.htoomaungthait.ems_backend.util.ResponseUtil;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,8 +50,8 @@ public class EmployeeController {
 
     // Build get all employees REST API
     @GetMapping
-    public ResponseEntity<ApiResponseV2<Page<EmployeeDto>>> getAllEmployee(Pageable pageable){
-        return this.employeeService.getAllEmployees(pageable);
+    public ResponseEntity<ApiResponseV2<Page<EmployeeDto>>> getAllEmployee(@Validated PaginationRequest paginationRequest){
+        return this.employeeService.getAllEmployees(paginationRequest.getPageable());
     }
 
     // Build update employee REST API
