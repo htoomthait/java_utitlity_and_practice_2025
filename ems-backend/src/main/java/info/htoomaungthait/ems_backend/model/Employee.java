@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name="tbl_employees")
@@ -33,6 +37,13 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = true)
     private Department department;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<ProjectAssignment> assignments = new HashSet<>();
+
+    // mappedBy refers to the "projectManager" field in project
+    @OneToMany(mappedBy = "projectManager", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Project>  managingProjects;
 
     public  Employee(){
 
@@ -89,16 +100,26 @@ public class Employee {
         return salary;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
+
 
     public void setSalary(double salary) {
         this.salary = salary;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Set<ProjectAssignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<ProjectAssignment> assignments) {
+        this.assignments = assignments;
     }
 
     @Override
