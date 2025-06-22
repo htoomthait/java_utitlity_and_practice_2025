@@ -1,0 +1,48 @@
+spring:
+  config:
+    import: optional:file:env.properties
+  application:
+    name: ${APP_NAME}
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: false # use true if you want Spring Boot to control Flyway
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 1.0
+    ignore-future-migrations: true
+    ignore-missing-migrations: true
+    schemas: public
+    table: flyway_schema_history
+    check-location: false
+
+logging:
+  file:
+    name: logs/app.log
+  level:
+    root: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+jwt:
+  expiration:
+    ms: 86400000  # 24 hour lifetime
+  secret: wl20bRN+wnHeYLVLlU5bk0BQKxNrTyaFJLvYFpDSaxI=
