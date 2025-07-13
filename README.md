@@ -7,6 +7,7 @@ List of projects can be seen as follows. Studied referenced links will be also m
 
 - Gold Price MMk Converter CLI application
 - Employee Management System backend with spring boot and frontend with React
+- Java Spring Boot flyway migration example practice project
 
 
 ## References
