@@ -16,8 +16,18 @@ public class HomeController extends BaseController{
     }
 
     @GetMapping("/home")
-    public CustomRespond<String> home() {
+    public ResponseEntity<CustomRespond<String>> home() {
 
-        return this.createResponse( "200",  "successfully fetched!" ,"Welcome to the Liquid Database Practice Application", "Home Page");
+
+
+        return  createResponse(
+                HttpStatus.OK,
+                "success",
+                "WH001",
+                "Welcome to the Liquid Database Practice Application",
+                null
+        );
+
+
     }
 }

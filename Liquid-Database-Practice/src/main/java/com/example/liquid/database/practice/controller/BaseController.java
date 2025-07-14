@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class BaseController {
 
 
-    protected <T> CustomRespond<T> createResponse(String status, String respondCode, String message, T data) {
+    protected <T> ResponseEntity<CustomRespond<T>> createResponse(HttpStatus httpstatus, String status, String respondCode, String message, T data) {
 
-        return  CustomRespond.of(respondCode, status, message, data);
+        CustomRespond<T> response =  CustomRespond.of(respondCode, status, message, data);
+
+        return ResponseEntity.status(httpstatus)
+                .body(response);
 
     }
 }
