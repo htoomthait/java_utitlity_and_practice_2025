@@ -14,7 +14,7 @@ CREATE TABLE comments (id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL, comment VARCH
 
 -- changeset htoomaungthait:1752594487744-3
 --preconditions onFail:MARK_RAN onError:MARK_RAN
-CREATE INDEX article_fk ON comments(article_id);
+CREATE INDEX article_fk_idx ON comments(article_id);
 
 -- changeset htoomaungthait:1752594487744-4
 --preconditions onFail:MARK_RAN onError:MARK_RAN

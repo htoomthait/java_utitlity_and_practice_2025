@@ -2,4 +2,8 @@ mvn liquibase:update // for update to database
 
 mvn liquibase:generateChangeLog -Dliquibase.outputChangeLogFile=src/main/resources/db/changelog/generated.mysql.sql [worked] // for generate changelog sql from database
 
+// after changes has been made in database the whole changelog can be generated to file with sql
+
 mvn liquibase:rollback -Dliquibase.rollbackCount=1 // for rollback  operation
+
+liquibase should be disable at the start of the project, then it can be enabled later
