@@ -1,4 +1,4 @@
-package net.htoomaungthait.junit.practice.controllers;
+package net.htoomaungthait.junit.practice.controller;
 
 
 import net.htoomaungthait.junit.practice.respond.FmtResponse;
@@ -19,8 +19,9 @@ public class HomeController extends BaseController{
     @RequestMapping("/home")
     @ResponseStatus(HttpStatus.OK)
     public FmtResponse<String> home(
-            @RequestParam(value = "name", defaultValue = "Htoo Maung Thait") String name
+            @RequestParam(value = "name", defaultValue = "Htoo Maung Thait") String name,
+            @RequestParam(value = "email", defaultValue = "htoomaungthait@gmail.com") String email
     ) {
-        return FmtResponse.of("HC-001", "success", homeService.getWelcomeMessage(name));
+        return FmtResponse.of("HC-001", "success", homeService.getWelcomeMessage(name, email));
     }
 }
